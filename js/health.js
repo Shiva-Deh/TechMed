@@ -101,8 +101,8 @@ function renderChart(entries) {
     data: {
       labels,
       datasets: [
-        { label: 'Mood', data: mood, borderColor: '#0F6E5E', backgroundColor: 'rgba(15,110,94,.12)', tension: .35, fill: true, pointRadius: 3 },
-        { label: 'Sleep (h)', data: sleep, borderColor: '#FF6B57', backgroundColor: 'rgba(255,107,87,.10)', tension: .35, fill: false, pointRadius: 3, borderDash: [5,4] }
+        { label: 'Mood', data: mood, borderColor: '#1E3A6E', backgroundColor: 'rgba(30,58,110,.12)', tension: .35, fill: true, pointRadius: 3 },
+        { label: 'Sleep (h)', data: sleep, borderColor: '#E5566D', backgroundColor: 'rgba(229,86,109,.10)', tension: .35, fill: false, pointRadius: 3, borderDash: [5,4] }
       ]
     },
     options: {
@@ -117,8 +117,8 @@ function renderChart(entries) {
 function renderHealth() {
   const entries = loadEntries();
   const today = entries[entries.length - 1];
-  drawRing('ring-mind', mindScore(today), '#0F6E5E');
-  drawRing('ring-body', bodyScore(today), '#FF6B57');
+  drawRing('ring-mind', mindScore(today), '#1E3A6E');
+  drawRing('ring-body', bodyScore(today), '#E5566D');
   renderMetrics(entries);
   renderChart(entries);
 }

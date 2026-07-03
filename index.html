@@ -20,8 +20,8 @@
   <header class="topbar">
     <div class="topbar__inner">
       <a class="brand" href="#" aria-label="Tech Med home">
-        <!-- To use your own image, change the src below to images/logo.jpg -->
-        <img src="images/logo.svg" alt="Tech Med" />
+        <!-- Your circular logo (sitting in the repo root). -->
+        <img src="TechMed_logo_circular.png" alt="Tech Med" />
       </a>
       <span class="topbar__pill">● Feeling well today?</span>
     </div>
@@ -89,23 +89,7 @@
       <div class="chat">
         <div class="chat__head">
           <h2>Health chat</h2>
-          <p>Ask about symptoms, habits, medications, or wellbeing. Not a substitute for a doctor.</p>
-        </div>
-
-        <div class="keybar">
-          <details>
-            <summary>⚙︎ Connect the AI (add your API key)</summary>
-            <input id="api-key" type="password" placeholder="Paste your Anthropic API key (sk-ant-…)" autocomplete="off" />
-            <div class="row">
-              <button id="key-clear">Clear</button>
-              <button id="key-save" class="save">Save key</button>
-            </div>
-            <small>
-              Your key is stored only in this browser (localStorage) and sent straight to Anthropic — never to us.
-              This is fine for personal use. For a public site, route calls through your own small backend so the key stays hidden.
-              No key yet? Get one at <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a>.
-            </small>
-          </details>
+          <p>Ask about symptoms, sleep, stress, hydration, or how you're feeling. Not a substitute for a doctor.</p>
         </div>
 
         <div class="chat__log" id="chat-log"></div>

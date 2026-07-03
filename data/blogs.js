@@ -29,7 +29,7 @@ const BLOGS = [
     title: "Why 7 hours of sleep does more for immunity than any supplement",
     date: "Jul 01, 2026",
     summary: "New reviews keep pointing to the same free medicine: consistent sleep.",
-    image: "",
+    image: "https://images.unsplash.com/photo-1531353826977-0941b4779a1c?q=70&w=1200&auto=format&fit=crop",
     hue: "plum",
     icon: "😴",
     featured: true,
@@ -52,7 +52,7 @@ You don't need a perfect eight hours. Aim for a regular window and protect it li
     title: "\"Exercise snacks\": tiny bursts of movement add up",
     date: "Jun 29, 2026",
     summary: "Two-minute walks after meals blunt blood-sugar spikes.",
-    image: "",
+    image: "https://images.unsplash.com/photo-1477332552946-cfb384aeaf1c?q=70&w=1200&auto=format&fit=crop",
     hue: "mint",
     icon: "🚶",
     body:
@@ -68,7 +68,7 @@ Easy ways to stack them: walk while a call is on audio, take stairs as a deliber
     title: "The 8-glasses rule is a myth — here's the honest version",
     date: "Jun 27, 2026",
     summary: "Your needs vary with heat, size, and activity. Thirst is a decent guide.",
-    image: "",
+    image: "https://images.unsplash.com/photo-1602904761432-f9ad96133982?q=70&w=1200&auto=format&fit=crop",
     hue: "sky",
     icon: "💧",
     body:
@@ -84,7 +84,7 @@ Bottom line: you probably don't need to force litres, but you shouldn't ignore g
     title: "The 20-20-20 rule for screen-tired eyes",
     date: "Jun 24, 2026",
     summary: "Every 20 minutes, look 20 feet away for 20 seconds.",
-    image: "",
+    image: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=70&w=1200&auto=format&fit=crop",
     hue: "gold",
     icon: "👀",
     body:
@@ -100,7 +100,7 @@ Pair it with slightly larger text, a screen at arm's length just below eye level
     title: "Feeding your gut: the case for 30 plants a week",
     date: "Jun 21, 2026",
     summary: "Diversity of plants, not any single superfood, feeds a healthy microbiome.",
-    image: "",
+    image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?q=70&w=1200&auto=format&fit=crop",
     hue: "mint",
     icon: "🥗",
     body:
@@ -116,7 +116,7 @@ You don't need to overhaul your diet. Swap in a new vegetable, add beans to a di
     title: "One slow exhale can down-shift your stress response",
     date: "Jun 18, 2026",
     summary: "Longer exhales gently activate the body's calming nervous system.",
-    image: "",
+    image: "https://images.unsplash.com/photo-1513097847644-f00cfe868607?q=70&w=1200&auto=format&fit=crop",
     hue: "coral",
     icon: "🌬️",
     body:
