@@ -100,6 +100,37 @@ function renderChart(entries) {
   });
 }
 
+function fmtDay(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  return d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function renderHistory(entries) {
+  const wrap = document.getElementById('health-history');
+  if (!wrap) return;
+  const list = [...entries].sort((a, b) => b.date.localeCompare(a.date));
+  if (list.length === 0) {
+    wrap.innerHTML = '<p class="empty-note">No check-ins yet. Save one above to start your history.</p>';
+    return;
+  }
+  wrap.innerHTML = list.map(e => {
+    const stats = [
+      `Mood ${MOOD_WORDS[e.mood] || '\u2014'}`,
+      `${e.sleep}h sleep`,
+      `${e.steps != null ? e.steps.toLocaleString() : 0} steps`,
+      `${e.water} water`,
+      `Energy ${e.energy}/10`,
+      `Stress ${e.stress}/10`
+    ].join(' \u00B7 ');
+    return `<div class="note-card">
+      <button class="note-del" data-hdel="${e.date}" aria-label="Delete check-in">&times;</button>
+      <b class="note-card__title">${fmtDay(e.date)}</b>
+      <div class="note-card__body">${stats}</div>
+      ${e.note ? `<div class="hist-note">\u201C${escapeHtml(e.note)}\u201D</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
 function renderHealth() {
   const entries = loadEntries();
   const today = entries[entries.length - 1];
@@ -107,6 +138,7 @@ function renderHealth() {
   drawRing('ring-body', bodyScore(today), '#E5566D');
   renderMetrics(entries);
   renderChart(entries);
+  renderHistory(entries);
 }
 
 function saveToday() {
@@ -164,5 +196,15 @@ function initHealth() {
   }
 
   document.getElementById('save-log').addEventListener('click', saveToday);
+
+  document.getElementById('health-history').addEventListener('click', e => {
+    const del = e.target.closest('[data-hdel]');
+    if (!del) return;
+    const date = del.getAttribute('data-hdel');
+    saveEntries(loadEntries().filter(x => x.date !== date));
+    renderHealth();
+    if (typeof initVitals === 'function') initVitals();
+  });
+
   renderHealth();
 }

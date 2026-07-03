@@ -464,3 +464,5 @@ button { font-family: inherit; cursor: pointer; }
 .note-del { position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; border-radius: 50%; border: none; background: var(--surface-2); color: var(--muted); font-size: 18px; line-height: 1; cursor: pointer; }
 .note-del:hover { background: var(--pulse-soft); color: var(--pulse); }
 .empty-note { color: var(--muted); font-size: 14px; text-align: center; padding: 20px 0; }
+
+.hist-note { margin-top: 8px; font-size: 13.5px; font-style: italic; color: var(--muted); }

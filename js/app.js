@@ -123,22 +123,8 @@ function initVitals() {
   if (sm) sm.textContent = String(sleepM).padStart(2, '0');
 }
 
-function initDailyTip() {
-  const tips = [
-    "Stand up and stretch once an hour, your back and focus both thank you.",
-    "A two-minute walk after eating helps steady your blood sugar.",
-    "Longer exhales calm the body, breathe in for 4, out for 6.",
-    "Morning daylight within an hour of waking sets a better sleep rhythm.",
-    "Swap one snack for a piece of fruit and a handful of nuts today.",
-    "Text someone you care about, connection is good medicine too."
-  ];
-  const i = new Date().getDate() % tips.length;
-  document.getElementById('daily-tip').textContent = tips[i];
-}
-
 document.addEventListener('DOMContentLoaded', () => {
   initNav();
-  initDailyTip();
   initBlogs();
   initChat();
   initHealth();
