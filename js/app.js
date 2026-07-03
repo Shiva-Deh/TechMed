@@ -2,7 +2,7 @@
    App shell, routing, bottom nav, Home widgets, boot
    ============================================================ */
 
-const VIEWS = ['home', 'blogs', 'chat', 'health', 'history', 'notes'];
+const VIEWS = ['home', 'blogs', 'chat', 'health', 'history', 'notes', 'about'];
 
 function switchView(name) {
   if (!VIEWS.includes(name)) name = 'home';

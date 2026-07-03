@@ -19,11 +19,13 @@
   <!-- ============ TOP BAR: logo instead of a name ============ -->
   <header class="topbar">
     <div class="topbar__inner">
-      <a class="brand" href="#" aria-label="Tech Med home">
-        <!-- Your circular logo (sitting in the repo root). -->
+      <span class="topbar__spacer"></span>
+      <a class="brand" href="#home" aria-label="Tech Med home">
         <img src="TechMed_logo_circular.png" alt="Tech Med" />
       </a>
-      <span class="topbar__pill">● Feeling well today?</span>
+      <button class="topbar__about" data-view-link="about" aria-label="About us" title="About us">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r=".7"/></svg>
+      </button>
     </div>
   </header>
 
@@ -328,6 +330,46 @@
           <button class="save-log" id="history-save" style="margin-top:16px">Save history</button>
           <div id="history-result" class="hist-result" hidden></div>
           <p class="care-note">This baseline is not a diagnosis. For anything urgent or worrying, contact a healthcare professional, and in an emergency use your local emergency number.</p>
+        </div>
+        <div class="footer-space"></div>
+      </div>
+    </section>
+
+    <!-- ==================== ABOUT US ==================== -->
+    <section id="view-about" class="view">
+      <div class="hero hero--slim">
+        <div class="hero__inner">
+          <p class="eyebrow">About us</p>
+          <h1>The <span class="accent">Tech Med</span> story</h1>
+          <p>Good health guidance should feel calm, clear, and within reach for everyone.</p>
+        </div>
+      </div>
+
+      <div class="wrap">
+        <div class="section about">
+          <p class="about__lead">Tech Med began with a simple frustration: health information is everywhere, yet it often arrives buried in jargon, wrapped in alarm, or locked behind a clinic door. We wanted a gentler front door, a place you can open on an ordinary day to read something useful, ask a question, and keep a quiet eye on how you are doing.</p>
+
+          <p class="about__body">So we built a companion, not a clinic. Fresh, plain-language reads. A friendly chat that answers your questions and points you to real care when it matters. A simple way to track your mind and body, set medication reminders, and keep your own health history in one private place. Nothing here shouts. Everything here is meant to help you take one small, steady step.</p>
+
+          <h2 class="about__h2">What we believe</h2>
+          <div class="values">
+            <div class="value"><b>Plain language</b><span>Health should be explained the way a kind friend would, not a textbook.</span></div>
+            <div class="value"><b>Privacy first</b><span>Your notes, history, and tracking stay on your own device.</span></div>
+            <div class="value"><b>Small habits</b><span>Steady, everyday changes beat dramatic quick fixes.</span></div>
+            <div class="value"><b>Always toward real care</b><span>We support you, and nudge you to a professional when it counts.</span></div>
+          </div>
+
+          <h2 class="about__h2">What is inside</h2>
+          <div class="offer">
+            <div class="offer__row"><b>Blog</b><span>Short, current reads on sleep, movement, food, and mind.</span></div>
+            <div class="offer__row"><b>Health chat</b><span>Ask Dr. Sana almost any health question, any time.</span></div>
+            <div class="offer__row"><b>Health tracking</b><span>A calm daily check-in for mood, sleep, steps, and more.</span></div>
+            <div class="offer__row"><b>Medication reminders</b><span>A calendar to set medicines once or every week.</span></div>
+            <div class="offer__row"><b>Patient history</b><span>A one-time baseline that stays private to you.</span></div>
+            <div class="offer__row"><b>Notes</b><span>A place to jot questions for your next appointment.</span></div>
+          </div>
+
+          <p class="care-note">Tech Med is a wellbeing companion, not a medical device, and it does not replace a doctor. For anything urgent or worrying, please contact a healthcare professional, and in an emergency use your local emergency number.</p>
         </div>
         <div class="footer-space"></div>
       </div>
