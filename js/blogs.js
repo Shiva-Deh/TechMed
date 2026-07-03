@@ -94,7 +94,6 @@ function wireRailArrows() {
 }
 
 function initBlogs() {
-  renderFeatured();
   renderRail();
   renderBlogGrid();
   wireRailArrows();

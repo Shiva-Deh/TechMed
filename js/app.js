@@ -129,6 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initChat();
   initHealth();
   initNotes();
+  initMeds();
   initRecentConvos();
   initVitals();
   route();   // honor any #hash on first load (e.g. a shared blog link)

@@ -466,3 +466,42 @@ button { font-family: inherit; cursor: pointer; }
 .empty-note { color: var(--muted); font-size: 14px; text-align: center; padding: 20px 0; }
 
 .hist-note { margin-top: 8px; font-size: 13.5px; font-style: italic; color: var(--muted); }
+
+/* ============================================================
+   Medication reminder calendar
+   ============================================================ */
+.cal { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 14px; }
+.cal__bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.cal__title { font-family: "Fraunces", serif; font-weight: 600; font-size: 18px; }
+.cal__nav { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface-2); color: var(--primary-deep); font-size: 18px; line-height: 1; }
+.cal__nav:active { background: var(--primary-soft); }
+.cal__dow { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 4px; }
+.cal__dow span { text-align: center; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+.cal__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.cal__cell {
+  position: relative; aspect-ratio: 1; border: 1px solid transparent; background: none;
+  border-radius: 10px; font-size: 14px; font-weight: 600; color: var(--ink);
+  display: flex; align-items: center; justify-content: center; transition: .12s;
+}
+.cal__cell--empty { visibility: hidden; }
+.cal__cell:hover { background: var(--surface-2); }
+.cal__cell.is-today { border-color: var(--accent); color: var(--accent); }
+.cal__cell.is-selected { background: var(--accent); color: #fff; }
+.cal__cell.is-selected.is-today { border-color: #fff; }
+.cal__dot { position: absolute; bottom: 6px; width: 5px; height: 5px; border-radius: 50%; background: var(--pulse); }
+.cal__cell.is-selected .cal__dot { background: #fff; }
+
+/* selected-day panel */
+.med-panel { margin-top: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 16px; }
+.med-panel__sel { font-weight: 700; font-size: 14.5px; color: var(--primary-deep); margin-bottom: 12px; }
+.seg { display: flex; gap: 6px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 4px; margin-bottom: 12px; }
+.seg__btn { flex: 1; border: none; background: none; border-radius: 9px; padding: 9px 6px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.seg__btn.is-on { background: var(--primary); color: #fff; }
+.med-form { display: grid; gap: 10px; }
+.med-form input { border: 1px solid var(--line); border-radius: 10px; padding: 11px 13px; font-size: 15px; font-family: inherit; }
+.med-form input:focus { outline: none; border-color: var(--accent); }
+.med-list { margin-top: 14px; display: grid; gap: 10px; }
+.med-item { position: relative; background: var(--surface-2); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: var(--radius-sm); padding: 12px 40px 12px 14px; }
+.med-item__name { font-size: 15.5px; font-weight: 700; }
+.med-item__dose { font-size: 13.5px; color: var(--muted); margin-top: 2px; }
+.med-item__when { display: inline-block; margin-top: 8px; font-size: 11px; font-weight: 700; letter-spacing: .3px; text-transform: uppercase; color: var(--primary-deep); background: var(--primary-soft); padding: 3px 9px; border-radius: 999px; }
