@@ -1,5 +1,5 @@
 /* ============================================================
-   App shell — routing, bottom nav, Home widgets, boot
+   App shell, routing, bottom nav, Home widgets, boot
    ============================================================ */
 
 const VIEWS = ['home', 'blogs', 'chat', 'health', 'notes'];

@@ -1,5 +1,5 @@
 /* ============================================================
-   Health chat — Tech Med
+   Health chat, Tech Med
    Keyword assistant with a female persona (Dr. Sana).
    Now also remembers conversations so the Home page can show
    short summaries you can tap to reopen.

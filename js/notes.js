@@ -1,5 +1,5 @@
 /* ============================================================
-   Notes — a simple personal notepad saved on this device.
+   Notes, a simple personal notepad saved on this device.
    Stored under localStorage key 'techmed_notes'.
    ============================================================ */
 

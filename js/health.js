@@ -1,5 +1,5 @@
 /* ============================================================
-   Health tracking (formal — no emojis)
+   Health tracking (formal, no emojis)
    Daily check-ins saved in this browser. Two score rings,
    metric tiles, a 7-day chart, and a quick log form that now
    includes steps (linked to the Home page steps card).
@@ -33,7 +33,7 @@ function drawRing(svgId, value, color) {
   const v = value == null ? 0 : value;
   const R = 46, C = 2 * Math.PI * R;
   const off = C * (1 - v / 100);
-  const label = value == null ? '\u2013' : v;
+  const label = value == null ? '0' : v;
   svg.innerHTML = `
     <circle cx="60" cy="60" r="${R}" fill="none" stroke="var(--line)" stroke-width="10"/>
     <circle cx="60" cy="60" r="${R}" fill="none" stroke="${color}" stroke-width="10"
@@ -47,7 +47,7 @@ function trendPill(cur, prev, invert = false) {
   if (prev == null || cur == null) return '';
   const up = cur > prev;
   const good = invert ? !up : up;
-  const arrow = up ? '\u25B2' : (cur < prev ? '\u25BC' : '\u2013');
+  const arrow = up ? '\u25B2' : (cur < prev ? '\u25BC' : '');
   return `<span class="trend ${good ? 'up' : 'down'}">${arrow}</span>`;
 }
 
@@ -57,12 +57,12 @@ function renderMetrics(entries) {
   const prev = entries[entries.length - 2];
 
   const tiles = [
-    { key: 'Mood',    val: today ? MOOD_WORDS[today.mood] : '\u2014', accent: '#1E3A6E' },
-    { key: 'Sleep',   val: today ? today.sleep + 'h' : '\u2014', accent: '#4B3F8F', pill: today && prev ? trendPill(today.sleep, prev.sleep) : '' },
-    { key: 'Steps',   val: today && today.steps != null ? today.steps.toLocaleString() : '\u2014', accent: '#2E6BE6', pill: today && prev && today.steps != null && prev.steps != null ? trendPill(today.steps, prev.steps) : '' },
-    { key: 'Water',   val: today ? today.water : '\u2014', accent: '#2E7DD1', pill: today && prev ? trendPill(today.water, prev.water) : '' },
-    { key: 'Energy',  val: today ? today.energy + '/10' : '\u2014', accent: '#0A7C4A', pill: today && prev ? trendPill(today.energy, prev.energy) : '' },
-    { key: 'Stress',  val: today ? today.stress + '/10' : '\u2014', accent: '#E5566D', pill: today && prev ? trendPill(today.stress, prev.stress, true) : '' },
+    { key: 'Mood',    val: today ? MOOD_WORDS[today.mood] : '\u00B7', accent: '#1E3A6E' },
+    { key: 'Sleep',   val: today ? today.sleep + 'h' : '\u00B7', accent: '#4B3F8F', pill: today && prev ? trendPill(today.sleep, prev.sleep) : '' },
+    { key: 'Steps',   val: today && today.steps != null ? today.steps.toLocaleString() : '\u00B7', accent: '#2E6BE6', pill: today && prev && today.steps != null && prev.steps != null ? trendPill(today.steps, prev.steps) : '' },
+    { key: 'Water',   val: today ? today.water : '\u00B7', accent: '#2E7DD1', pill: today && prev ? trendPill(today.water, prev.water) : '' },
+    { key: 'Energy',  val: today ? today.energy + '/10' : '\u00B7', accent: '#0A7C4A', pill: today && prev ? trendPill(today.energy, prev.energy) : '' },
+    { key: 'Stress',  val: today ? today.stress + '/10' : '\u00B7', accent: '#E5566D', pill: today && prev ? trendPill(today.stress, prev.stress, true) : '' },
   ];
 
   grid.innerHTML = tiles.map(t => `
@@ -115,7 +115,7 @@ function renderHistory(entries) {
   }
   wrap.innerHTML = list.map(e => {
     const stats = [
-      `Mood ${MOOD_WORDS[e.mood] || '\u2014'}`,
+      `Mood ${MOOD_WORDS[e.mood] || '\u00B7'}`,
       `${e.sleep}h sleep`,
       `${e.steps != null ? e.steps.toLocaleString() : 0} steps`,
       `${e.water} water`,

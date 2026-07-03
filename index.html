@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Tech Med — Your everyday health companion</title>
+  <title>Tech Med, your everyday health companion</title>
   <meta name="description" content="Tech Med: fresh health reads, a healthcare chatbot, and simple mind + body tracking." />
   <meta name="theme-color" content="#0F6E5E" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/styles.css" />
 </head>
@@ -34,8 +34,7 @@
       <div class="hero">
         <div class="hero__inner">
           <p class="eyebrow">Welcome to Tech Med</p>
-          <h1>Small habits, <span class="accent">steady health.</span><br>Your body's on your side — let's listen to it.</h1>
-          <p>Fresh reads, a healthcare chat, and a simple way to keep an eye on your mind and body — all in one calm place.</p>
+          <h1>Small habits, <span class="accent">steady health.</span></h1>
           <svg class="pulse" viewBox="0 0 620 40" preserveAspectRatio="none" aria-hidden="true">
             <path d="M0 20 H150 l14 -14 l16 30 l14 -22 l10 6 H360 l12 -12 l14 24 l12 -18 l9 6 H620"/>
           </svg>
@@ -59,7 +58,7 @@
           </div>
 
           <div class="med-panel">
-            <div class="med-panel__sel" id="med-sel-label">Selected day: —</div>
+            <div class="med-panel__sel" id="med-sel-label">Selected day: today</div>
             <div class="seg" id="med-scope">
               <button class="seg__btn is-on" data-scope="once">Just this day</button>
               <button class="seg__btn" data-scope="weekly">Every <span id="scope-weekday">day</span></button>
@@ -70,20 +69,6 @@
               <button class="save-log" id="med-add">Add reminder</button>
             </div>
             <div class="med-list" id="med-list"></div>
-          </div>
-        </div>
-
-        <!-- Horizontal scrollable rail (read-more, scrolls L↔R) -->
-        <div class="section">
-          <div class="section__head">
-            <h2>More stories</h2>
-            <a class="link" href="#" id="see-all">Swipe →</a>
-          </div>
-          <p class="section__sub">Swipe left and right to browse.</p>
-          <div class="rail-outer">
-            <button class="rail-btn prev" aria-label="Scroll left">‹</button>
-            <div class="rail" id="blog-rail"></div>
-            <button class="rail-btn next" aria-label="Scroll right">›</button>
           </div>
         </div>
 
@@ -147,6 +132,20 @@
           <p class="section__sub">Quick summaries of your latest chats. Tap one to reopen it.</p>
           <div class="conditions" id="recent-convos"></div>
         </div>
+
+        <!-- Blogs (moved to the end): center is bigger, sides are snapshots -->
+        <div class="section">
+          <div class="section__head">
+            <h2>From the blog</h2>
+            <button class="link" id="car-swipe" type="button">Swipe &rarr;</button>
+          </div>
+          <p class="section__sub">Tap a side story to bring it front, or open the middle one.</p>
+          <div class="carousel">
+            <button class="car-arrow prev" id="car-prev" aria-label="Previous">&lsaquo;</button>
+            <div class="car-stage" id="car-stage"></div>
+            <button class="car-arrow next" id="car-next" aria-label="Next">&rsaquo;</button>
+          </div>
+        </div>
         <div class="footer-space"></div>
       </div>
     </section>
@@ -197,6 +196,7 @@
     <section id="view-health" class="view">
       <div class="wrap">
         <div class="health__head">
+          <p class="health-bio">Small habits, steady health. Your body's on your side, let's listen to it. Fresh reads, a healthcare chat, and a simple way to keep an eye on your mind and body, all in one calm place.</p>
           <h2>Your health, at a glance</h2>
           <p>A calm overview of mind and body. Everything here stays on your device.</p>
         </div>
@@ -239,14 +239,14 @@
               </div>
             </div>
             <div class="field">
-              <label>Energy (1–10)</label>
+              <label>Energy (1 to 10)</label>
               <div class="slider-row">
                 <input type="range" id="in-energy" min="1" max="10" value="6" />
                 <span class="sv" id="sv-energy">6</span>
               </div>
             </div>
             <div class="field">
-              <label>Stress (1–10)</label>
+              <label>Stress (1 to 10)</label>
               <div class="slider-row">
                 <input type="range" id="in-stress" min="1" max="10" value="4" />
                 <span class="sv" id="sv-stress">4</span>

@@ -1,5 +1,5 @@
 /* ============================================================
-   Medication reminders — a month calendar on the Home page.
+   Medication reminders, a month calendar on the Home page.
    - Tap a day to select it.
    - Choose "Just this day" (one date) or "Every <weekday>".
    - Add a medication name + how much, saved as a reminder.
