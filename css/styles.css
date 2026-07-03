@@ -630,10 +630,13 @@ textarea.field-in { min-height: 64px; resize: vertical; }
 .value b { display: block; font-size: 15px; margin-bottom: 4px; }
 .value span { font-size: 13.5px; color: var(--muted); line-height: 1.55; }
 .offer { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; }
-.offer__row { display: flex; flex-direction: column; gap: 2px; padding: 13px 16px; border-bottom: 1px solid var(--line); }
+.offer__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; text-align: left; padding: 13px 16px; border: none; border-bottom: 1px solid var(--line); background: none; cursor: pointer; transition: background .15s; }
+.offer__row:hover { background: var(--surface-2); }
 .offer__row:last-child { border-bottom: none; }
-.offer__row b { font-size: 14.5px; }
-.offer__row span { font-size: 13px; color: var(--muted); }
+.offer__txt { display: flex; flex-direction: column; gap: 2px; }
+.offer__txt b { font-size: 14.5px; }
+.offer__txt span { font-size: 13px; color: var(--muted); }
+.offer__go { color: var(--accent); font-size: 22px; font-weight: 600; flex: 0 0 auto; }
 
 /* ============================================================
    7-tab nav sizing + urgent chat bubble + About page

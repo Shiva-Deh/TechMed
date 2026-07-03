@@ -137,7 +137,23 @@ async function wikiAnswer(q) {
   } catch (e) { return null; }
 }
 
-/* ---------- reply pipeline ---------- */
+/* ---------- is the question even about health? ---------- */
+const HEALTH_TERMS = ['health', 'medical', 'medicine', 'doctor', 'nurse', 'hospital', 'clinic', 'symptom', 'pain',
+  'ache', 'fever', 'cough', 'cold', 'flu', 'sick', 'ill', 'disease', 'condition', 'infection', 'virus', 'bacteria',
+  'medication', 'drug', 'pill', 'tablet', 'dose', 'treatment', 'therapy', 'diagnos', 'blood', 'heart', 'lung',
+  'liver', 'kidney', 'stomach', 'gut', 'head', 'throat', 'skin', 'rash', 'allerg', 'diabet', 'cancer', 'asthma',
+  'pressure', 'cholesterol', 'anxiety', 'depress', 'stress', 'sleep', 'insomnia', 'diet', 'nutrition', 'vitamin',
+  'exercise', 'weight', 'pregnan', 'period', 'menstru', 'injury', 'wound', 'burn', 'fracture', 'sprain', 'nausea',
+  'vomit', 'diarr', 'constipat', 'dizz', 'fatigue', 'tired', 'sore', 'swelling', 'cramp', 'migraine', 'headache',
+  'mental', 'wellbeing', 'body', 'muscle', 'bone', 'joint', 'eye', 'ear', 'nose', 'tooth', 'teeth', 'dental',
+  'mood', 'vaccine', 'immune', 'hormone', 'thyroid', 'bruise', 'bleed', 'breath', 'chest', 'faint', 'seizure',
+  'anemia', 'ulcer', 'arthritis', 'covid', 'flu', 'nutrient', 'calorie', 'fitness', 'hydrat', 'poison'];
+function isHealthRelated(text) {
+  const s = text.toLowerCase();
+  return HEALTH_TERMS.some(t => s.includes(t));
+}
+
+
 async function getReply(raw) {
   const text = raw.toLowerCase();
   if (CRISIS_KEYS.some(k => text.includes(k))) return { text: CRISIS_REPLY, urgent: true };
@@ -145,7 +161,9 @@ async function getReply(raw) {
   const common = scan(COMMON, text); if (common) return { text: common };
   const wiki = await wikiAnswer(raw);
   if (wiki) return { text: wiki.text, source: wiki.url };
-  return { text: "I couldn't find a reliable health answer for that one. If it's about a symptom, gentle self-care helps for mild cases, and anything that worsens or worries you is worth a professional's look. You can also try rephrasing." };
+  if (isHealthRelated(raw))
+    return { text: "This is a health question, but I can't answer it reliably enough to be safe here, it's beyond what I should try to judge on my own. Please check with a doctor, pharmacist, or nurse, who can advise you properly." };
+  return { text: "This looks like it's outside health, which is the only area I'm built to classify and answer. If it is a medical concern, a doctor or another health professional is the right person to advise you." };
 }
 
 async function handleSend(text) {
