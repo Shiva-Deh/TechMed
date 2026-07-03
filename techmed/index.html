@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Tech Med — Your everyday health companion</title>
+  <meta name="description" content="Tech Med: fresh health reads, a healthcare chatbot, and simple mind + body tracking." />
+  <meta name="theme-color" content="#0F6E5E" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ============ TOP BAR: logo instead of a name ============ -->
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="#" aria-label="Tech Med home">
+        <!-- To use your own image, change the src below to images/logo.jpg -->
+        <img src="images/logo.svg" alt="Tech Med" />
+      </a>
+      <span class="topbar__pill">● Feeling well today?</span>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ==================== HOME ==================== -->
+    <section id="view-home" class="view is-active">
+      <div class="hero">
+        <div class="hero__inner">
+          <p class="eyebrow">Welcome to Tech Med</p>
+          <h1>Small habits, <span class="accent">steady health.</span><br>Your body's on your side — let's listen to it.</h1>
+          <p>Fresh reads, a healthcare chat, and a simple way to keep an eye on your mind and body — all in one calm place.</p>
+          <svg class="pulse" viewBox="0 0 620 40" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0 20 H150 l14 -14 l16 30 l14 -22 l10 6 H360 l12 -12 l14 24 l12 -18 l9 6 H620"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="wrap">
+        <!-- Featured / latest post -->
+        <div class="section">
+          <div class="section__head"><h2>Today's read</h2></div>
+          <p class="section__sub">Daily findings and health news, refreshed as they land.</p>
+          <article class="feature" id="featured"></article>
+        </div>
+
+        <!-- Horizontal scrollable rail (read-more, scrolls L↔R) -->
+        <div class="section">
+          <div class="section__head">
+            <h2>More stories</h2>
+            <a class="link" href="#" id="see-all">Swipe →</a>
+          </div>
+          <p class="section__sub">Swipe left and right to browse.</p>
+          <div class="rail-outer">
+            <button class="rail-btn prev" aria-label="Scroll left">‹</button>
+            <div class="rail" id="blog-rail"></div>
+            <button class="rail-btn next" aria-label="Scroll right">›</button>
+          </div>
+        </div>
+
+        <!-- "Other stuff" below on the home page -->
+        <div class="section">
+          <div class="section__head"><h2>Health, by the numbers</h2></div>
+          <p class="section__sub">Quick facts worth remembering.</p>
+          <div class="facts">
+            <div class="fact"><div class="n">7–9h</div><div class="l">Sleep most adults do best on</div></div>
+            <div class="fact"><div class="n">150m</div><div class="l">Weekly movement, any kind</div></div>
+            <div class="fact"><div class="n">30</div><div class="l">Plant types a week for gut health</div></div>
+            <div class="fact"><div class="n">2 min</div><div class="l">Walk after meals steadies sugar</div></div>
+          </div>
+
+          <div class="tip">
+            <span class="k">Tip of the day</span>
+            <p id="daily-tip">Loading a fresh tip…</p>
+          </div>
+        </div>
+        <div class="footer-space"></div>
+      </div>
+    </section>
+
+    <!-- ==================== CHATBOT ==================== -->
+    <section id="view-chat" class="view">
+      <div class="chat">
+        <div class="chat__head">
+          <h2>Health chat</h2>
+          <p>Ask about symptoms, habits, medications, or wellbeing. Not a substitute for a doctor.</p>
+        </div>
+
+        <div class="keybar">
+          <details>
+            <summary>⚙︎ Connect the AI (add your API key)</summary>
+            <input id="api-key" type="password" placeholder="Paste your Anthropic API key (sk-ant-…)" autocomplete="off" />
+            <div class="row">
+              <button id="key-clear">Clear</button>
+              <button id="key-save" class="save">Save key</button>
+            </div>
+            <small>
+              Your key is stored only in this browser (localStorage) and sent straight to Anthropic — never to us.
+              This is fine for personal use. For a public site, route calls through your own small backend so the key stays hidden.
+              No key yet? Get one at <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a>.
+            </small>
+          </details>
+        </div>
+
+        <div class="chat__log" id="chat-log"></div>
+
+        <div class="suggest" id="chat-suggest">
+          <button>What helps a tension headache?</button>
+          <button>Is my sleep schedule healthy?</button>
+          <button>Ways to lower daily stress</button>
+          <button>What does blood pressure mean?</button>
+        </div>
+
+        <div class="composer">
+          <input id="chat-input" type="text" placeholder="Type your health question…" autocomplete="off" />
+          <button id="chat-send" aria-label="Send">➤</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== HEALTH TRACKING ==================== -->
+    <section id="view-health" class="view">
+      <div class="wrap">
+        <div class="health__head">
+          <h2>Your health, at a glance</h2>
+          <p>A calm overview of mind and body. Everything here stays on your device.</p>
+        </div>
+
+        <!-- Two headline rings: mind + body -->
+        <div class="score-row">
+          <div class="ring-card">
+            <h4>Mind</h4>
+            <svg class="ring" viewBox="0 0 120 120" id="ring-mind"></svg>
+          </div>
+          <div class="ring-card">
+            <h4>Body</h4>
+            <svg class="ring" viewBox="0 0 120 120" id="ring-body"></svg>
+          </div>
+        </div>
+
+        <!-- Metric tiles -->
+        <div class="metric-grid" id="metric-grid"></div>
+
+        <!-- 7-day trend chart -->
+        <div class="panel">
+          <h3>Last 7 days</h3>
+          <p class="hint">Mood and sleep over the week.</p>
+          <div class="chart-box"><canvas id="trend-chart"></canvas></div>
+        </div>
+
+        <!-- Daily log -->
+        <div class="panel">
+          <h3>Log today</h3>
+          <p class="hint">Takes about 20 seconds.</p>
+          <div class="log-form">
+            <div class="field">
+              <label>How's your mood?</label>
+              <div class="mood-row" id="mood-row">
+                <button data-mood="1">😞</button>
+                <button data-mood="2">😕</button>
+                <button data-mood="3">😐</button>
+                <button data-mood="4">🙂</button>
+                <button data-mood="5">😄</button>
+              </div>
+            </div>
+            <div class="field">
+              <label>Energy (1–10)</label>
+              <div class="slider-row">
+                <input type="range" id="in-energy" min="1" max="10" value="6" />
+                <span class="sv" id="sv-energy">6</span>
+              </div>
+            </div>
+            <div class="field">
+              <label>Stress (1–10)</label>
+              <div class="slider-row">
+                <input type="range" id="in-stress" min="1" max="10" value="4" />
+                <span class="sv" id="sv-stress">4</span>
+              </div>
+            </div>
+            <div class="field">
+              <label>Sleep last night (hours)</label>
+              <input type="number" id="in-sleep" min="0" max="14" step="0.5" value="7.5" />
+            </div>
+            <div class="field">
+              <label>Glasses of water</label>
+              <input type="number" id="in-water" min="0" max="20" step="1" value="6" />
+            </div>
+            <div class="field">
+              <label>Anything on your mind? (optional)</label>
+              <textarea id="in-note" placeholder="A quick note to yourself…"></textarea>
+            </div>
+            <button class="save-log" id="save-log">Save today's check-in</button>
+          </div>
+        </div>
+
+        <p class="care-note">
+          Tech Med is a wellbeing companion, not a medical device or diagnosis. If something feels wrong,
+          or you're struggling emotionally, please reach out to a doctor or a trusted person. In an emergency,
+          contact your local emergency number.
+        </p>
+        <div class="footer-space"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ BOTTOM NAV (the toolbar) ============ -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <button class="nav__btn is-active" data-view="home">
+        <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>
+        Home
+      </button>
+      <button class="nav__btn" data-view="chat">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/><path d="M8 10h8M8 13h5"/></svg>
+        Chat
+      </button>
+      <button class="nav__btn" data-view="health">
+        <svg viewBox="0 0 24 24"><path d="M3 12h4l2 5 4-12 2 7h6"/></svg>
+        Health
+      </button>
+    </div>
+  </nav>
+
+  <!-- Chart.js for the health trend graph -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- App code -->
+  <script src="data/blogs.js"></script>
+  <script src="js/blogs.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script src="js/health.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
