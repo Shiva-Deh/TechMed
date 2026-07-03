@@ -2,7 +2,7 @@
    App shell — bottom-nav switching + boot
    ============================================================ */
 
-const VIEWS = ['home', 'chat', 'health'];
+const VIEWS = ['home', 'blogs', 'chat', 'health'];
 
 function switchView(name) {
   VIEWS.forEach(v => {
@@ -41,10 +41,60 @@ function initDailyTip() {
   document.getElementById('daily-tip').textContent = tips[i];
 }
 
+function initVitals() {
+  // Pull today's water/sleep from the health log if it exists, else nice defaults.
+  let water = 6, sleepH = 7, sleepM = 20, steps = 7248;
+  try {
+    const list = JSON.parse(localStorage.getItem('techmed_health')) || [];
+    const today = list[list.length - 1];
+    if (today) {
+      if (typeof today.water === 'number') water = today.water;
+      if (typeof today.sleep === 'number') {
+        sleepH = Math.floor(today.sleep);
+        sleepM = Math.round((today.sleep - sleepH) * 60);
+      }
+    }
+  } catch (e) {}
+
+  // WATER — fill height between 15% and 72% of the box
+  const pct = Math.max(0, Math.min(water / 8, 1));
+  const fill = document.getElementById('water-fill');
+  const gl = document.getElementById('water-glasses');
+  if (fill) setTimeout(() => { fill.style.height = (15 + pct * 57) + '%'; }, 250);
+  if (gl) gl.textContent = water;
+  const wsub = document.getElementById('water-sub');
+  if (wsub) wsub.textContent = 'of 8 today';
+
+  // STEPS — count up + fill the ring
+  const goal = 10000;
+  const frac = Math.min(steps / goal, 1);
+  const prog = document.getElementById('steps-prog');
+  const C = 2 * Math.PI * 50; // 314
+  if (prog) setTimeout(() => { prog.style.strokeDashoffset = C * (1 - frac); }, 300);
+  const countEl = document.getElementById('steps-count');
+  if (countEl) {
+    let cur = 0;
+    const t0 = performance.now(), dur = 1400;
+    const tick = (t) => {
+      const p = Math.min((t - t0) / dur, 1);
+      cur = Math.round(steps * (0.5 - Math.cos(Math.PI * p) / 2)); // ease
+      countEl.textContent = cur.toLocaleString();
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
+  // SLEEP
+  const sh = document.getElementById('sleep-h'), sm = document.getElementById('sleep-m');
+  if (sh) sh.textContent = sleepH;
+  if (sm) sm.textContent = String(sleepM).padStart(2, '0');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initNav();
   initDailyTip();
   initBlogs();
   initChat();
   initHealth();
+  initVitals();
 });

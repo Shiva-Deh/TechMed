@@ -64,21 +64,92 @@
           </div>
         </div>
 
-        <!-- "Other stuff" below on the home page -->
+        <!-- Today's snapshot: animated vitals -->
         <div class="section">
-          <div class="section__head"><h2>Health, by the numbers</h2></div>
-          <p class="section__sub">Quick facts worth remembering.</p>
-          <div class="facts">
-            <div class="fact"><div class="n">7–9h</div><div class="l">Sleep most adults do best on</div></div>
-            <div class="fact"><div class="n">150m</div><div class="l">Weekly movement, any kind</div></div>
-            <div class="fact"><div class="n">30</div><div class="l">Plant types a week for gut health</div></div>
-            <div class="fact"><div class="n">2 min</div><div class="l">Walk after meals steadies sugar</div></div>
+          <div class="section__head"><h2>Today's snapshot</h2></div>
+          <p class="section__sub">A quick look at your day.</p>
+
+          <div class="vitals">
+            <!-- WATER: box fills with moving water -->
+            <div class="vital water-card" id="water-card">
+              <div class="water-fill" id="water-fill">
+                <svg class="wave" viewBox="0 0 240 40" preserveAspectRatio="none">
+                  <path d="M0 20 Q 30 8 60 20 T 120 20 T 180 20 T 240 20 V40 H0 Z"/>
+                </svg>
+                <svg class="wave wave2" viewBox="0 0 240 40" preserveAspectRatio="none">
+                  <path d="M0 22 Q 30 34 60 22 T 120 22 T 180 22 T 240 22 V40 H0 Z"/>
+                </svg>
+              </div>
+              <div class="vital__content">
+                <span class="vital__label">💧 Water</span>
+                <span class="vital__big"><b id="water-glasses">6</b> <small>glasses</small></span>
+                <span class="vital__sub" id="water-sub">of 8 today</span>
+              </div>
+            </div>
+
+            <!-- STEPS: animated ring + count-up + walker on the track -->
+            <div class="vital steps-card">
+              <svg class="steps-ring" viewBox="0 0 120 120">
+                <circle class="track" cx="60" cy="60" r="50"/>
+                <circle class="prog" id="steps-prog" cx="60" cy="60" r="50"/>
+              </svg>
+              <span class="walker" id="walker">🚶</span>
+              <div class="vital__content center">
+                <span class="vital__big"><b id="steps-count">0</b></span>
+                <span class="vital__label">steps</span>
+                <span class="vital__sub">since this morning</span>
+              </div>
+            </div>
+
+            <!-- SLEEP: purple-blue, moon drifts on hover -->
+            <div class="vital sleep-card" id="sleep-card">
+              <div class="stars"></div>
+              <span class="moon">🌙</span>
+              <div class="vital__content">
+                <span class="vital__label">Sleep</span>
+                <span class="vital__big"><b id="sleep-h">7</b><small>h</small> <b id="sleep-m">20</b><small>m</small></span>
+                <span class="vital__sub">last night</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Last known conditions (sample, edit in index.html) -->
+        <div class="section">
+          <div class="section__head"><h2>Last known conditions</h2></div>
+          <div class="conditions">
+            <div class="cond"><span class="cond__dot" style="background:#7C6CC4"></span>
+              <div class="cond__txt"><b>Seasonal allergic rhinitis</b><small>Noted Mar 2025</small></div>
+              <span class="cond__tag stable">Stable</span></div>
+            <div class="cond"><span class="cond__dot" style="background:#E6A93C"></span>
+              <div class="cond__txt"><b>Mild hypertension</b><small>Under monitoring</small></div>
+              <span class="cond__tag monitor">Monitor</span></div>
+            <div class="cond"><span class="cond__dot" style="background:#2E6BE6"></span>
+              <div class="cond__txt"><b>Vitamin D support</b><small>Supplement ongoing</small></div>
+              <a class="cond__link" href="#">Details ›</a></div>
           </div>
 
           <div class="tip">
             <span class="k">Tip of the day</span>
             <p id="daily-tip">Loading a fresh tip…</p>
           </div>
+        </div>
+        <div class="footer-space"></div>
+      </div>
+    </section>
+
+    <!-- ==================== BLOGS ==================== -->
+    <section id="view-blogs" class="view">
+      <div class="hero hero--slim">
+        <div class="hero__inner">
+          <p class="eyebrow">Tech Med</p>
+          <h1>The <span class="accent">Reading Room</span></h1>
+          <p>Fresh health reads, findings, and gentle habits. Tap any story to read it.</p>
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="section">
+          <div class="blog-grid" id="blog-grid"></div>
         </div>
         <div class="footer-space"></div>
       </div>
@@ -200,6 +271,10 @@
       <button class="nav__btn is-active" data-view="home">
         <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>
         Home
+      </button>
+      <button class="nav__btn" data-view="blogs">
+        <svg viewBox="0 0 24 24"><path d="M4 5h11a2 2 0 0 1 2 2v13"/><path d="M4 5v14a2 2 0 0 0 2 2h11"/><path d="M7 9h7M7 13h7"/></svg>
+        Blogs
       </button>
       <button class="nav__btn" data-view="chat">
         <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/><path d="M8 10h8M8 13h5"/></svg>

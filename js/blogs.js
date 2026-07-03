@@ -106,8 +106,24 @@ function wireRailArrows() {
   next?.addEventListener('click', () => rail.scrollBy({ left:  step(), behavior: 'smooth' }));
 }
 
+function renderBlogGrid() {
+  const grid = document.getElementById('blog-grid');
+  if (!grid) return;
+  grid.innerHTML = BLOGS.map(p => `
+    <article class="card" data-open="${p.id}">
+      <div class="card__media">${tileHTML(p)}</div>
+      <div class="card__body">
+        <span class="tag">${escapeHtml(p.tag)}</span>
+        <h4>${escapeHtml(p.title)}</h4>
+        <p>${escapeHtml(p.summary)}</p>
+        <div class="meta"><span>${escapeHtml(p.date)}</span><span class="dot"></span><span>2 min read</span></div>
+      </div>
+    </article>`).join('');
+}
+
 function initBlogs() {
   renderFeatured();
   renderRail();
+  renderBlogGrid();
   wireRailArrows();
 }
