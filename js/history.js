@@ -210,8 +210,76 @@ function initHistory() {
     }
   });
 
+function buildFlags() {
+  const a = answers;
+  const has = (id, val) => Array.isArray(a[id]) ? a[id].includes(val) : a[id] === val;
+  const chronic = Array.isArray(a.pmh_chronic) ? a.pmh_chronic : [];
+  const flags = [];
+
+  if (chronic.includes('High blood pressure') || chronic.includes('Heart disease') || chronic.includes('High cholesterol') || a.fh_cardiac === 'yes' || a.sh_smoke === 'Currently')
+    flags.push('Heart and blood pressure: regular blood pressure and cholesterol checks are worth keeping up.');
+  if (chronic.includes('Diabetes') || a.fh_metabolic === 'yes')
+    flags.push('Blood sugar: periodic screening is worth discussing, especially with family history.');
+  if (a.pmh_lung === 'yes')
+    flags.push('Breathing (asthma or COPD): keep any inhalers current and know your triggers.');
+  if (a.pmh_clot === 'yes' || a.fh_clot_mh === 'yes')
+    flags.push('Circulation: mention any clot or stroke history at your appointments.');
+  if (a.allergy_any === 'yes' || a.allergy_severe === 'yes')
+    flags.push('Allergies: keep any prescribed emergency medication (such as an epinephrine pen) with you.');
+  if (a.sh_smoke === 'Currently')
+    flags.push('Smoking: quitting is one of the biggest wins for your health, ask about support.');
+  if (a.sh_alcohol_cut === 'yes')
+    flags.push('Alcohol: you noted wanting to cut down, your doctor can help with that.');
+  if (a.sh_inject === 'yes')
+    flags.push('Injection safety: testing and harm-reduction services are available and confidential.');
+  if (a.fh_cancer === 'yes')
+    flags.push('Family cancer history: ask whether earlier or more frequent screening is right for you.');
+  if (a.sh_doctor === 'no' || a.sh_afford === 'no')
+    flags.push('Access to care: community health centres can help if cost or not having a doctor is a barrier.');
+  if (a.fi_falls === 'yes')
+    flags.push('Falls: a balance check and medication review can lower the risk of another one.');
+  if (a.mh_mood === 'Low' || a.mh_mood === 'Very low')
+    flags.push('Mental wellbeing: your mood answers suggest some support could help, a doctor or counsellor is a good step.');
+  return flags;
+}
+
+function renderHistoryResult() {
+  const box = document.getElementById('history-result');
+  const flags = buildFlags();
+  const crisis = answers.mh_selfharm === 'yes';
+
+  let html = '<h3 class="hist-result__title">Based on your answers</h3>';
+  html += '<p class="hist-result__note">This is a general summary to talk through with a professional, not a diagnosis.</p>';
+
+  if (crisis) {
+    html += `<div class="safety-note">You mentioned thoughts of harming yourself. Please reach out now, you deserve support.
+      In Canada or the US you can call or text <b>988</b>, or contact your local emergency number.</div>`;
+  }
+
+  if (flags.length) {
+    html += '<div class="flag-list">' + flags.map(f => {
+      const i = f.indexOf(':');
+      const head = i > 0 ? f.slice(0, i) : 'Worth noting';
+      const rest = i > 0 ? f.slice(i + 1).trim() : f;
+      return `<div class="flag"><b>${escapeHtml(head)}</b><span>${escapeHtml(rest)}</span></div>`;
+    }).join('') + '</div>';
+  } else {
+    html += '<p class="hist-result__ok">Nothing specific stood out from your answers. Keep up your healthy habits, and check in with a doctor for anything that changes.</p>';
+  }
+
+  html += `<div class="ask-cta">
+      <span>Have more questions about any of these?</span>
+      <button class="ask-cta__btn" type="button" data-view-link="chat">Ask our chatbot &rarr;</button>
+    </div>`;
+
+  box.innerHTML = html;
+  box.hidden = false;
+  box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
   document.getElementById('history-save').addEventListener('click', () => {
     saveHistory();
+    renderHistoryResult();
     const btn = document.getElementById('history-save');
     const o = btn.textContent; btn.textContent = 'Saved to this device';
     setTimeout(() => (btn.textContent = o), 1600);
