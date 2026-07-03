@@ -2,7 +2,7 @@
    App shell, routing, bottom nav, Home widgets, boot
    ============================================================ */
 
-const VIEWS = ['home', 'blogs', 'chat', 'health', 'notes'];
+const VIEWS = ['home', 'blogs', 'chat', 'health', 'history', 'notes'];
 
 function switchView(name) {
   if (!VIEWS.includes(name)) name = 'home';
@@ -130,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initHealth();
   initNotes();
   initMeds();
+  initHistory();
   initRecentConvos();
   initVitals();
   route();   // honor any #hash on first load (e.g. a shared blog link)

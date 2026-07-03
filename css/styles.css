@@ -548,3 +548,43 @@ button { font-family: inherit; cursor: pointer; }
   color: var(--primary-deep); font-size: 18px; line-height: 1;
 }
 .car-arrow:active { background: var(--primary-soft); }
+
+/* ============================================================
+   Bottom nav with 6 tabs (tighter to fit History)
+   ============================================================ */
+.nav__btn { font-size: 10px; gap: 3px; }
+.nav__btn svg { width: 22px; height: 22px; }
+
+/* ============================================================
+   Patient History questionnaire
+   ============================================================ */
+.hsec { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 16px 16px 6px; margin-bottom: 14px; }
+.hsec__title { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+.hq__note { font-size: 12.5px; color: var(--muted); margin: 0 0 12px; }
+.hsec--opt { padding: 0 16px; }
+.hsec--opt summary { cursor: pointer; font-family: "Inter", sans-serif; font-size: 18px; font-weight: 700; padding: 16px 0 12px; list-style: none; display: flex; align-items: center; gap: 10px; }
+.hsec--opt summary::-webkit-details-marker { display: none; }
+.hsec--opt[open] summary { border-bottom: 1px solid var(--line); }
+.opt-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; color: var(--muted); background: var(--surface-2); border: 1px solid var(--line); padding: 2px 8px; border-radius: 999px; }
+.hsec--opt > .hq:last-child { margin-bottom: 14px; }
+
+.hq { margin-bottom: 16px; }
+.hq__label { display: block; font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 8px; line-height: 1.4; }
+.field-in { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font-size: 15px; font-family: inherit; background: var(--surface-2); }
+.field-in:focus { outline: none; border-color: var(--accent); background: #fff; }
+textarea.field-in { min-height: 64px; resize: vertical; }
+.clarify { margin-top: 8px; }
+
+.wrap-seg { flex-wrap: wrap; }
+.wrap-seg .seg__btn { flex: 1 1 auto; min-width: 84px; }
+
+.yn { display: flex; gap: 8px; }
+.yn__btn { flex: 1; border: 1px solid var(--line); background: var(--surface-2); border-radius: 10px; padding: 10px; font-size: 14px; font-weight: 600; color: var(--muted); }
+.yn__btn.is-on { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+.chk-group { display: grid; gap: 8px; }
+.chk { display: flex; align-items: center; gap: 10px; font-size: 14.5px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2); cursor: pointer; }
+.chk input { width: 18px; height: 18px; accent-color: var(--accent); }
+
+.safety-note { margin-top: 10px; font-size: 13.5px; line-height: 1.55; color: #8a2b34; background: var(--pulse-soft); border: 1px solid #f3c6cd; border-radius: 10px; padding: 12px 14px; }
+.safety-note b { color: #6f1f27; }
