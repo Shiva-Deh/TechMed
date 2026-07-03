@@ -87,16 +87,17 @@
               </div>
             </div>
 
-            <!-- STEPS: animated ring + count-up + walker on the track -->
+            <!-- STEPS: ring + big count, label below -->
             <div class="vital steps-card">
-              <svg class="steps-ring" viewBox="0 0 120 120">
-                <circle class="track" cx="60" cy="60" r="50"/>
-                <circle class="prog" id="steps-prog" cx="60" cy="60" r="50"/>
-              </svg>
-              <span class="walker" id="walker">🚶</span>
-              <div class="vital__content center">
-                <span class="vital__big"><b id="steps-count">0</b></span>
-                <span class="vital__label">steps</span>
+              <div class="steps-ring-wrap">
+                <svg class="steps-ring" viewBox="0 0 120 120">
+                  <circle class="track" cx="60" cy="60" r="50"/>
+                  <circle class="prog" id="steps-prog" cx="60" cy="60" r="50"/>
+                </svg>
+                <span class="steps-num" id="steps-count">0</span>
+              </div>
+              <div class="steps-caption">
+                <span class="steps-word">steps</span>
                 <span class="vital__sub">since this morning</span>
               </div>
             </div>
@@ -114,20 +115,14 @@
           </div>
         </div>
 
-        <!-- Last known conditions (sample, edit in index.html) -->
+        <!-- Recent conversations (pulled from your chats with Dr. Sana) -->
         <div class="section">
-          <div class="section__head"><h2>Last known conditions</h2></div>
-          <div class="conditions">
-            <div class="cond"><span class="cond__dot" style="background:#7C6CC4"></span>
-              <div class="cond__txt"><b>Seasonal allergic rhinitis</b><small>Noted Mar 2025</small></div>
-              <span class="cond__tag stable">Stable</span></div>
-            <div class="cond"><span class="cond__dot" style="background:#E6A93C"></span>
-              <div class="cond__txt"><b>Mild hypertension</b><small>Under monitoring</small></div>
-              <span class="cond__tag monitor">Monitor</span></div>
-            <div class="cond"><span class="cond__dot" style="background:#2E6BE6"></span>
-              <div class="cond__txt"><b>Vitamin D support</b><small>Supplement ongoing</small></div>
-              <a class="cond__link" href="#">Details ›</a></div>
+          <div class="section__head">
+            <h2>Recent conversations</h2>
+            <a class="link" href="#" data-view-link="chat">Open chat ›</a>
           </div>
+          <p class="section__sub">Quick summaries of your latest chats. Tap one to reopen it.</p>
+          <div class="conditions" id="recent-convos"></div>
 
           <div class="tip">
             <span class="k">Tip of the day</span>
@@ -150,6 +145,7 @@
       <div class="wrap">
         <div class="section">
           <div class="blog-grid" id="blog-grid"></div>
+          <article class="blog-detail" id="blog-detail" hidden></article>
         </div>
         <div class="footer-space"></div>
       </div>
@@ -217,11 +213,11 @@
             <div class="field">
               <label>How's your mood?</label>
               <div class="mood-row" id="mood-row">
-                <button data-mood="1">😞</button>
-                <button data-mood="2">😕</button>
-                <button data-mood="3">😐</button>
-                <button data-mood="4">🙂</button>
-                <button data-mood="5">😄</button>
+                <button data-mood="1">Very low</button>
+                <button data-mood="2">Low</button>
+                <button data-mood="3">Okay</button>
+                <button data-mood="4">Good</button>
+                <button data-mood="5">Great</button>
               </div>
             </div>
             <div class="field">
@@ -237,6 +233,10 @@
                 <input type="range" id="in-stress" min="1" max="10" value="4" />
                 <span class="sv" id="sv-stress">4</span>
               </div>
+            </div>
+            <div class="field">
+              <label>Steps taken today</label>
+              <input type="number" id="in-steps" min="0" max="80000" step="100" value="0" />
             </div>
             <div class="field">
               <label>Sleep last night (hours)</label>
@@ -263,15 +263,36 @@
       </div>
     </section>
 
+    <!-- ==================== NOTES ==================== -->
+    <section id="view-notes" class="view">
+      <div class="hero hero--slim">
+        <div class="hero__inner">
+          <p class="eyebrow">Tech Med</p>
+          <h1>My <span class="accent">Notes</span></h1>
+          <p>Jot down symptoms, questions for your doctor, or anything to remember. Saved on this device.</p>
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="section">
+          <div class="note-composer">
+            <input id="note-title" type="text" placeholder="Title (optional)" />
+            <textarea id="note-body" placeholder="Write a note…"></textarea>
+            <button class="save-log" id="note-save">Save note</button>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section__head"><h2>Saved notes</h2></div>
+          <div id="note-list" class="note-list"></div>
+        </div>
+        <div class="footer-space"></div>
+      </div>
+    </section>
+
   </main>
 
   <!-- ============ BOTTOM NAV (the toolbar) ============ -->
   <nav class="nav">
     <div class="nav__inner">
-      <button class="nav__btn is-active" data-view="home">
-        <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>
-        Home
-      </button>
       <button class="nav__btn" data-view="blogs">
         <svg viewBox="0 0 24 24"><path d="M4 5h11a2 2 0 0 1 2 2v13"/><path d="M4 5v14a2 2 0 0 0 2 2h11"/><path d="M7 9h7M7 13h7"/></svg>
         Blogs
@@ -280,9 +301,19 @@
         <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/><path d="M8 10h8M8 13h5"/></svg>
         Chat
       </button>
+      <button class="nav__btn nav__btn--home is-active" data-view="home">
+        <span class="home-orb">
+          <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>
+        </span>
+        Home
+      </button>
       <button class="nav__btn" data-view="health">
         <svg viewBox="0 0 24 24"><path d="M3 12h4l2 5 4-12 2 7h6"/></svg>
         Health
+      </button>
+      <button class="nav__btn" data-view="notes">
+        <svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>
+        Notes
       </button>
     </div>
   </nav>
@@ -295,6 +326,7 @@
   <script src="js/blogs.js"></script>
   <script src="js/chatbot.js"></script>
   <script src="js/health.js"></script>
+  <script src="js/notes.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

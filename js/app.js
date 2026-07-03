@@ -1,10 +1,11 @@
 /* ============================================================
-   App shell — bottom-nav switching + boot
+   App shell — routing, bottom nav, Home widgets, boot
    ============================================================ */
 
-const VIEWS = ['home', 'blogs', 'chat', 'health'];
+const VIEWS = ['home', 'blogs', 'chat', 'health', 'notes'];
 
 function switchView(name) {
+  if (!VIEWS.includes(name)) name = 'home';
   VIEWS.forEach(v => {
     document.getElementById('view-' + v).classList.toggle('is-active', v === name);
   });
@@ -14,71 +15,103 @@ function switchView(name) {
   window.scrollTo({ top: 0, behavior: 'auto' });
 }
 
+/* ---- hash routing (supports opening a blog in a new tab) ---- */
+function route() {
+  const h = location.hash;
+  const blog = h.match(/^#blog\/(.+)$/);
+  if (blog) {
+    switchView('blogs');
+    showBlogDetail(decodeURIComponent(blog[1]));
+    return;
+  }
+  const view = h.replace('#', '');
+  switchView(VIEWS.includes(view) ? view : 'home');
+  if (view === 'blogs' || view === '') showBlogList();
+}
+
 function initNav() {
   document.querySelector('.nav__inner').addEventListener('click', e => {
     const btn = e.target.closest('.nav__btn');
-    if (btn) switchView(btn.dataset.view);
+    if (btn) location.hash = '#' + btn.dataset.view;
   });
-  // logo returns home
-  document.querySelector('.brand').addEventListener('click', e => { e.preventDefault(); switchView('home'); });
-  document.getElementById('see-all').addEventListener('click', e => {
-    e.preventDefault();
-    document.getElementById('blog-rail').scrollBy({ left: 300, behavior: 'smooth' });
+  document.querySelector('.brand').addEventListener('click', e => { e.preventDefault(); location.hash = '#home'; });
+
+  // any element with data-view-link jumps to that view
+  document.addEventListener('click', e => {
+    const link = e.target.closest('[data-view-link]');
+    if (link) { e.preventDefault(); location.hash = '#' + link.getAttribute('data-view-link'); }
   });
+
+  window.addEventListener('hashchange', route);
 }
 
-function initDailyTip() {
-  const tips = [
-    "Stand up and stretch once an hour — your back and focus both thank you.",
-    "A two-minute walk after eating helps steady your blood sugar.",
-    "Longer exhales calm the body: breathe in for 4, out for 6.",
-    "Morning daylight within an hour of waking sets a better sleep rhythm.",
-    "Swap one snack for a piece of fruit and a handful of nuts today.",
-    "Text someone you care about — connection is good medicine too."
-  ];
-  // rotate by day so it feels fresh but is stable through the day
-  const i = new Date().getDate() % tips.length;
-  document.getElementById('daily-tip').textContent = tips[i];
+/* ---- Recent conversations on Home ---- */
+function renderRecentConvos() {
+  const wrap = document.getElementById('recent-convos');
+  if (!wrap) return;
+  const list = (typeof getRecentConvos === 'function') ? getRecentConvos(3) : [];
+  if (list.length === 0) {
+    wrap.innerHTML = '<div class="cond"><div class="cond__txt"><b>No conversations yet</b><small>Ask Dr. Sana something in the Chat tab.</small></div></div>';
+    return;
+  }
+  const half = s => s.length > 46 ? s.slice(0, 46).trim() + '…' : s;
+  wrap.innerHTML = list.map(c => {
+    const when = new Date(c.ts).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    return `<div class="cond convo" data-convo="${c.id}">
+      <span class="cond__dot" style="background:#2E6BE6"></span>
+      <div class="cond__txt"><b>${escapeHtml(half(c.title))}</b><small>${c.msgs.length} messages · ${when}</small></div>
+      <span class="cond__link">Open ›</span>
+    </div>`;
+  }).join('');
 }
 
+function initRecentConvos() {
+  const wrap = document.getElementById('recent-convos');
+  wrap.addEventListener('click', e => {
+    const row = e.target.closest('[data-convo]');
+    if (!row) return;
+    const id = row.getAttribute('data-convo');
+    if (typeof loadConvoIntoChat === 'function') loadConvoIntoChat(id);
+    location.hash = '#chat';
+  });
+  renderRecentConvos();
+}
+
+/* ---- Home vitals (water fills, steps counts, sleep moon) ---- */
 function initVitals() {
-  // Pull today's water/sleep from the health log if it exists, else nice defaults.
-  let water = 6, sleepH = 7, sleepM = 20, steps = 7248;
+  let water = 6, sleepH = 7, sleepM = 20, steps = null;
   try {
     const list = JSON.parse(localStorage.getItem('techmed_health')) || [];
     const today = list[list.length - 1];
     if (today) {
       if (typeof today.water === 'number') water = today.water;
+      if (typeof today.steps === 'number') steps = today.steps;
       if (typeof today.sleep === 'number') {
         sleepH = Math.floor(today.sleep);
         sleepM = Math.round((today.sleep - sleepH) * 60);
       }
     }
   } catch (e) {}
+  if (steps == null) steps = 0;   // real steps come from the Health check-in
 
-  // WATER — fill height between 15% and 72% of the box
+  // WATER
   const pct = Math.max(0, Math.min(water / 8, 1));
   const fill = document.getElementById('water-fill');
-  const gl = document.getElementById('water-glasses');
   if (fill) setTimeout(() => { fill.style.height = (15 + pct * 57) + '%'; }, 250);
-  if (gl) gl.textContent = water;
-  const wsub = document.getElementById('water-sub');
-  if (wsub) wsub.textContent = 'of 8 today';
+  const gl = document.getElementById('water-glasses'); if (gl) gl.textContent = water;
 
-  // STEPS — count up + fill the ring
+  // STEPS
   const goal = 10000;
   const frac = Math.min(steps / goal, 1);
   const prog = document.getElementById('steps-prog');
-  const C = 2 * Math.PI * 50; // 314
+  const C = 2 * Math.PI * 50;
   if (prog) setTimeout(() => { prog.style.strokeDashoffset = C * (1 - frac); }, 300);
   const countEl = document.getElementById('steps-count');
   if (countEl) {
-    let cur = 0;
-    const t0 = performance.now(), dur = 1400;
-    const tick = (t) => {
+    const target = steps, t0 = performance.now(), dur = 1400;
+    const tick = t => {
       const p = Math.min((t - t0) / dur, 1);
-      cur = Math.round(steps * (0.5 - Math.cos(Math.PI * p) / 2)); // ease
-      countEl.textContent = cur.toLocaleString();
+      countEl.textContent = Math.round(target * (0.5 - Math.cos(Math.PI * p) / 2)).toLocaleString();
       if (p < 1) requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
@@ -90,11 +123,27 @@ function initVitals() {
   if (sm) sm.textContent = String(sleepM).padStart(2, '0');
 }
 
+function initDailyTip() {
+  const tips = [
+    "Stand up and stretch once an hour, your back and focus both thank you.",
+    "A two-minute walk after eating helps steady your blood sugar.",
+    "Longer exhales calm the body, breathe in for 4, out for 6.",
+    "Morning daylight within an hour of waking sets a better sleep rhythm.",
+    "Swap one snack for a piece of fruit and a handful of nuts today.",
+    "Text someone you care about, connection is good medicine too."
+  ];
+  const i = new Date().getDate() % tips.length;
+  document.getElementById('daily-tip').textContent = tips[i];
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initNav();
   initDailyTip();
   initBlogs();
   initChat();
   initHealth();
+  initNotes();
+  initRecentConvos();
   initVitals();
+  route();   // honor any #hash on first load (e.g. a shared blog link)
 });
