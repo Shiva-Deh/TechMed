@@ -19,13 +19,9 @@
   <!-- ============ TOP BAR: logo instead of a name ============ -->
   <header class="topbar">
     <div class="topbar__inner">
-      <span class="topbar__spacer"></span>
       <a class="brand" href="#home" aria-label="Tech Med home">
         <img src="TechMed_logo_circular.png" alt="Tech Med" />
       </a>
-      <button class="topbar__about" data-view-link="about" aria-label="About us" title="About us">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r=".7"/></svg>
-      </button>
     </div>
   </header>
 
@@ -341,33 +337,57 @@
         <div class="hero__inner">
           <p class="eyebrow">About us</p>
           <h1>The <span class="accent">Tech Med</span> story</h1>
-          <p>Good health guidance should feel calm, clear, and within reach for everyone.</p>
+          <p>Health guidance that is calm, clear, and within reach on any ordinary day.</p>
         </div>
       </div>
 
       <div class="wrap">
-        <div class="section about">
-          <p class="about__lead">Tech Med began with a simple frustration: health information is everywhere, yet it often arrives buried in jargon, wrapped in alarm, or locked behind a clinic door. We wanted a gentler front door, a place you can open on an ordinary day to read something useful, ask a question, and keep a quiet eye on how you are doing.</p>
+        <div class="about">
+          <figure class="about__hero">
+            <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=70&w=1400&auto=format&fit=crop" alt="A stethoscope resting on a soft surface" loading="lazy">
+          </figure>
 
-          <p class="about__body">So we built a companion, not a clinic. Fresh, plain-language reads. A friendly chat that answers your questions and points you to real care when it matters. A simple way to track your mind and body, set medication reminders, and keep your own health history in one private place. Nothing here shouts. Everything here is meant to help you take one small, steady step.</p>
+          <p class="about__lead">Tech Med began with a simple observation. Health information is everywhere, yet it so often arrives buried in jargon, wrapped in alarm, or waiting on the far side of an appointment. We set out to build a gentler front door to it, one you can open on an unremarkable Tuesday to read something useful, ask a question in plain words, and keep a quiet eye on how you are doing.</p>
+
+          <div class="about__split">
+            <div class="about__col">
+              <h2 class="about__h2">Why we exist</h2>
+              <p class="about__body">Most people are not looking for a diagnosis at midnight. They are looking for reassurance, a clear next step, and a sense of whether something is worth a doctor's time. Tech Med is built for exactly those moments. It is a companion, not a clinic: it explains, it organises, and when something matters, it points firmly toward real, professional care.</p>
+              <p class="about__body">Everything is designed to lower the effort of one healthy decision, whether that is a two-minute walk, a medication set on the calendar, or finally writing down the question you keep forgetting to ask.</p>
+            </div>
+            <figure class="about__figure">
+              <img src="https://images.unsplash.com/photo-1478476868527-002ae3f3e159?q=70&w=1200&auto=format&fit=crop" alt="Two people holding hands in a gesture of care" loading="lazy">
+              <figcaption>Care, in the ordinary sense of the word.</figcaption>
+            </figure>
+          </div>
 
           <h2 class="about__h2">What we believe</h2>
           <div class="values">
-            <div class="value"><b>Plain language</b><span>Health should be explained the way a kind friend would, not a textbook.</span></div>
-            <div class="value"><b>Privacy first</b><span>Your notes, history, and tracking stay on your own device.</span></div>
-            <div class="value"><b>Small habits</b><span>Steady, everyday changes beat dramatic quick fixes.</span></div>
-            <div class="value"><b>Always toward real care</b><span>We support you, and nudge you to a professional when it counts.</span></div>
+            <div class="value"><b>Plain language</b><span>Health explained the way a knowledgeable friend would, never like a textbook.</span></div>
+            <div class="value"><b>Small habits</b><span>Steady, everyday changes quietly outperform dramatic quick fixes.</span></div>
+            <div class="value"><b>Evidence informed</b><span>Guidance that leans on what the research actually supports.</span></div>
+            <div class="value"><b>Toward real care</b><span>We support you, and nudge you to a professional whenever it counts.</span></div>
           </div>
+
+          <figure class="about__wide">
+            <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=70&w=1400&auto=format&fit=crop" alt="A laptop and a stethoscope side by side" loading="lazy">
+            <figcaption>Thoughtful technology, in the service of everyday health.</figcaption>
+          </figure>
 
           <h2 class="about__h2">What is inside</h2>
           <div class="offer">
             <div class="offer__row"><b>Blog</b><span>Short, current reads on sleep, movement, food, and mind.</span></div>
-            <div class="offer__row"><b>Health chat</b><span>Ask Dr. Sana almost any health question, any time.</span></div>
+            <div class="offer__row"><b>Health chat</b><span>Ask Dr. Sana almost any health question, at any hour.</span></div>
             <div class="offer__row"><b>Health tracking</b><span>A calm daily check-in for mood, sleep, steps, and more.</span></div>
-            <div class="offer__row"><b>Medication reminders</b><span>A calendar to set medicines once or every week.</span></div>
-            <div class="offer__row"><b>Patient history</b><span>A one-time baseline that stays private to you.</span></div>
-            <div class="offer__row"><b>Notes</b><span>A place to jot questions for your next appointment.</span></div>
+            <div class="offer__row"><b>Medication reminders</b><span>A calendar to set medicines once, or every week.</span></div>
+            <div class="offer__row"><b>Patient history</b><span>A one-time baseline that helps tailor future guidance.</span></div>
+            <div class="offer__row"><b>Notes</b><span>A place to capture questions for your next appointment.</span></div>
           </div>
+
+          <blockquote class="about__note">
+            <span class="about__note-k">A note from us</span>
+            Building a health companion is a study in restraint. The temptation is always to say more, warn louder, and claim certainty the moment a symptom is typed in. We have tried, deliberately, to do the opposite: to stay measured, to admit what a short answer cannot know, and to send you toward a real clinician the instant that is the right call. Good health technology should feel less like an anxious voice and more like a steady one, the friend who helps you think clearly rather than the alarm that makes you panic. That is the standard we hold Tech Med to, and the one we keep working toward.
+          </blockquote>
 
           <p class="care-note">Tech Med is a wellbeing companion, not a medical device, and it does not replace a doctor. For anything urgent or worrying, please contact a healthcare professional, and in an emergency use your local emergency number.</p>
         </div>
@@ -388,15 +408,15 @@
         <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/><path d="M8 10h8M8 13h5"/></svg>
         Chat
       </button>
+      <button class="nav__btn" data-view="health">
+        <svg viewBox="0 0 24 24"><path d="M3 12h4l2 5 4-12 2 7h6"/></svg>
+        Health
+      </button>
       <button class="nav__btn nav__btn--home is-active" data-view="home">
         <span class="home-orb">
           <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>
         </span>
         Home
-      </button>
-      <button class="nav__btn" data-view="health">
-        <svg viewBox="0 0 24 24"><path d="M3 12h4l2 5 4-12 2 7h6"/></svg>
-        Health
       </button>
       <button class="nav__btn" data-view="history">
         <svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M9 12h6M9 16h4"/><circle cx="8" cy="8" r=".6"/></svg>
@@ -405,6 +425,10 @@
       <button class="nav__btn" data-view="notes">
         <svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>
         Notes
+      </button>
+      <button class="nav__btn" data-view="about">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r=".6"/></svg>
+        About
       </button>
     </div>
   </nav>

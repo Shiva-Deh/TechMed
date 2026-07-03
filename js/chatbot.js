@@ -1,16 +1,17 @@
 /* ============================================================
    Health chat, Tech Med  (Dr. Sana)
-   - Emergencies and safety are always answered locally, first.
-   - Common topics have quick, curated answers.
-   - Anything else is looked up live on the web via Wikipedia's
-     free API (no key needed), so it can answer almost any
-     health question and keeps improving as the web does.
-   - Every answer carries a "not a doctor" note.
+   Triage order (most important first):
+     1. Self-harm / crisis        -> supportive crisis reply
+     2. Urgent physical symptoms  -> first-aid + seek-care reply
+     3. Common everyday topics    -> quick curated answer
+     4. Anything else             -> live web lookup (Wikipedia),
+        filtered so it can only return health-relevant results
+        (never songs, films, albums, etc.)
+   Every answer carries a "not a doctor" note.
    ============================================================ */
 
-const BOT = '\uD83D\uDC69\u200D\u2695\uFE0F';   // woman health worker
+const BOT = '\uD83D\uDC69\u200D\u2695\uFE0F';
 const CONVO_STORE = 'techmed_convos';
-
 function el(id) { return document.getElementById(id); }
 
 /* ---------- conversation memory ---------- */
@@ -20,32 +21,26 @@ function loadConvos() { try { return JSON.parse(localStorage.getItem(CONVO_STORE
 function saveConvos() { localStorage.setItem(CONVO_STORE, JSON.stringify(convos)); }
 function currentConvo() { return convos.find(c => c.id === currentId); }
 function recordMsg(who, text) {
-  if (who === 'user' && !currentId) {
-    currentId = String(Date.now());
-    convos.push({ id: currentId, ts: Date.now(), title: text, msgs: [] });
-  }
+  if (who === 'user' && !currentId) { currentId = String(Date.now()); convos.push({ id: currentId, ts: Date.now(), title: text, msgs: [] }); }
   const c = currentConvo();
   if (c) { c.msgs.push({ who, text }); c.ts = Date.now(); saveConvos(); if (typeof renderRecentConvos === 'function') renderRecentConvos(); }
 }
 function getRecentConvos(n = 3) { return [...convos].sort((a, b) => b.ts - a.ts).slice(0, n); }
 function loadConvoIntoChat(id) {
   const c = convos.find(x => x.id === id); if (!c) return;
-  currentId = id;
-  const log = el('chat-log'); log.innerHTML = '';
+  currentId = id; const log = el('chat-log'); log.innerHTML = '';
   c.msgs.forEach(m => addMsg(m.text, m.who));
 }
 
 /* ---------- rendering ---------- */
 function addMsg(text, who, opts = {}) {
   const log = el('chat-log');
-  const row = document.createElement('div');
-  row.className = `row-msg ${who}`;
-  const avatar = document.createElement('div');
-  avatar.className = `avatar ${who}`;
+  const row = document.createElement('div'); row.className = `row-msg ${who}`;
+  const avatar = document.createElement('div'); avatar.className = `avatar ${who}`;
   avatar.textContent = who === 'bot' ? BOT : '\uD83D\uDE42';
-  const bubble = document.createElement('div');
-  bubble.className = `msg ${who}`;
+  const bubble = document.createElement('div'); bubble.className = `msg ${who}`;
   bubble.textContent = text;
+  if (opts.urgent) bubble.classList.add('msg--urgent');
   if (opts.source) {
     const a = document.createElement('a');
     a.className = 'msg-src'; a.href = opts.source; a.target = '_blank'; a.rel = 'noopener';
@@ -53,8 +48,7 @@ function addMsg(text, who, opts = {}) {
     bubble.appendChild(a);
   }
   if (opts.disclaimer) {
-    const d = document.createElement('span');
-    d.className = 'disc';
+    const d = document.createElement('span'); d.className = 'disc';
     d.textContent = 'General info, not medical advice. For anything serious, contact a healthcare professional.';
     bubble.appendChild(d);
   }
@@ -63,61 +57,95 @@ function addMsg(text, who, opts = {}) {
 }
 function showTyping() {
   const log = el('chat-log');
-  const div = document.createElement('div');
-  div.className = 'row-msg bot'; div.id = 'typing-row';
+  const div = document.createElement('div'); div.className = 'row-msg bot'; div.id = 'typing-row';
   div.innerHTML = `<div class="avatar bot">${BOT}</div><div class="msg bot"><span class="typing"><i></i><i></i><i></i></span></div>`;
   log.appendChild(div); log.scrollTop = log.scrollHeight;
 }
 function hideTyping() { const t = el('typing-row'); if (t) t.remove(); }
 
-/* ---------- local answers (safety first, then common topics) ---------- */
-const RULES = [
-  { keywords: ['suicide', 'kill myself', 'end my life', 'self-harm', 'hurt myself', 'want to die'],
-    reply: "I'm really glad you told me, and I want you to be safe. Please reach out right now to a local crisis line or emergency services, or to someone you trust. In Canada or the US you can call or text 988. You do not have to go through this alone." },
-  { keywords: ['chest pain', "can't breathe", 'cant breathe', 'shortness of breath', 'stroke', 'numb on one side', 'severe bleeding'],
-    reply: "That can be an emergency. Please call your local emergency number or get to urgent care right away rather than waiting for this to pass." },
-  { keywords: ['headache', 'migraine'],
-    reply: "For a tension headache, try water, rest in a dim quiet room, and a short break from screens. If a headache is sudden, severe, or unlike any you've had before, please get it checked promptly." },
-  { keywords: ['sleep', 'insomnia', "can't sleep", 'cant sleep'],
-    reply: "A steady wake-up time, morning daylight, and a screen curfew about 45 minutes before bed do most of the work for better sleep. Keep the room cool and dark, and save caffeine for the morning." },
-  { keywords: ['stress', 'anxious', 'anxiety', 'overwhelmed', 'panic'],
-    reply: "Try breathing in for a count of 4 and out for 6 for a couple of minutes, a longer exhale helps calm your body. If stress or anxiety sticks around, talking to a professional is really worth it." },
-  { keywords: ['blood pressure', 'hypertension'],
-    reply: "Blood pressure has two numbers, the top (systolic) is the push when the heart beats, the bottom (diastolic) is the rest in between. Around 120/80 is a common healthy reference, your clinician can tell you what's right for you." },
-];
-function findLocalReply(text) {
-  const s = text.toLowerCase();
-  for (const r of RULES) if (r.keywords.some(k => s.includes(k))) return r.reply;
-  return null;
-}
+/* ---------- 1. crisis ---------- */
+const CRISIS_KEYS = ['suicide', 'kill myself', 'end my life', 'end it all', 'self-harm', 'self harm', 'hurt myself', 'harm myself', 'want to die', "don't want to live", 'better off dead', 'worthless'];
+const CRISIS_REPLY = "I'm really glad you told me, and I want you to be safe. Please reach out right now to a local crisis line or someone you trust. In Canada or the US you can call or text 988, and if you are in immediate danger call your local emergency number. You do not have to go through this alone.";
 
-/* ---------- web lookup via Wikipedia (free, no key) ---------- */
+/* ---------- 2. urgent physical symptoms (first aid) ---------- */
+const URGENT = [
+  { keys: ['bleeding', 'bleed', 'wound', 'deep cut', 'gash', 'blood won', "won't stop bleeding", 'cut and it'],
+    reply: "For bleeding, press firmly on the spot with a clean cloth and keep steady pressure for about 10 minutes, and raise the area above heart level if you can. If the bleeding is heavy or spurting, soaks through, will not stop, or the cut is deep, gaping, or from something dirty or rusty, treat it as an emergency and get urgent care or call your local emergency number now." },
+  { keys: ['choking', 'something stuck in my throat', 'can\'t swallow'],
+    reply: "If someone is choking and cannot breathe, speak, or cough, this is an emergency, call your local emergency number now. If they can still cough, encourage them to keep coughing." },
+  { keys: ['chest pain', 'heart attack', 'pressure in my chest', 'pain in my chest'],
+    reply: "Chest pain can be an emergency, especially with sweating, nausea, or pain spreading to the arm, jaw, or back. Please call your local emergency number now rather than waiting." },
+  { keys: ['stroke', 'face drooping', 'slurred speech', 'numb on one side', 'can\'t move one side', 'weakness on one side'],
+    reply: "Sudden face drooping, arm weakness, or slurred speech can be signs of a stroke. This is an emergency, call your local emergency number immediately, minutes matter." },
+  { keys: ['can\'t breathe', 'cant breathe', 'struggling to breathe', 'shortness of breath', 'trouble breathing'],
+    reply: "Trouble breathing can be serious. If it is sudden or severe, or your lips or face look blue, call your local emergency number now." },
+  { keys: ['allergic reaction', 'throat closing', 'lips swelling', 'tongue swelling', 'anaphylaxis', 'face swelling up'],
+    reply: "A severe allergic reaction (swelling of the lips, tongue, or throat, trouble breathing, or widespread hives) is an emergency. Use an epinephrine auto-injector if one is available and call your local emergency number now." },
+  { keys: ['overdose', 'took too many', 'poison', 'swallowed something', 'ingested'],
+    reply: "If you think you or someone has taken too much medicine or swallowed something harmful, contact your local poison control or emergency number right away, even if they seem okay for now." },
+  { keys: ['seizure', 'convulsion', 'unconscious', 'passed out', 'won\'t wake up', 'not waking up', 'fainted'],
+    reply: "If someone is unconscious or having a seizure, call your local emergency number. Keep them safe from injury, do not put anything in their mouth, and stay with them until help arrives." },
+  { keys: ['burn', 'burned', 'scalded', 'scald'],
+    reply: "For a minor burn, cool it under cool running water for about 20 minutes and cover it loosely with clean cling film or a clean cloth. For large, deep, or blistering burns, or burns to the face, hands, or genitals, get urgent care." },
+  { keys: ['broken bone', 'fracture', 'broke my', 'think it\'s broken'],
+    reply: "If you might have a broken bone (severe pain, swelling, a limb that looks bent, or you cannot use it), keep it still and supported and get it checked with an x-ray at urgent care." },
+  { keys: ['hit my head', 'head injury', 'concussion', 'banged my head'],
+    reply: "After a head injury, watch for a worsening headache, repeated vomiting, confusion, drowsiness, or unequal pupils, and get emergency care right away if any of those appear." },
+];
+
+/* ---------- 3. common curated ---------- */
+const COMMON = [
+  { keys: ['headache', 'migraine'], reply: "For a tension headache, try water, rest in a dim quiet room, and a short screen break. If a headache is sudden, severe, or unlike any you've had before, get it checked promptly." },
+  { keys: ['sleep', 'insomnia', "can't sleep", 'cant sleep'], reply: "A steady wake-up time, morning daylight, and a screen curfew about 45 minutes before bed do most of the work for sleep. Keep the room cool and dark, and save caffeine for the morning." },
+  { keys: ['stress', 'anxious', 'anxiety', 'overwhelmed', 'panic'], reply: "Try breathing in for a count of 4 and out for 6 for a couple of minutes, a longer exhale helps calm your body. If it sticks around, talking to a professional is worth it." },
+  { keys: ['blood pressure', 'hypertension'], reply: "Blood pressure has two numbers, the top when the heart beats and the bottom at rest. Around 120/80 is a common healthy reference, and your clinician can tell you what's right for you." },
+  { keys: ['fever', 'cold', 'flu', 'sore throat', 'cough', 'runny nose'], reply: "For a typical cold or mild flu, rest, fluids, and time help most. See a doctor for a high or lasting fever, trouble breathing, or symptoms that keep getting worse." },
+];
+
+function scan(list, text) { for (const r of list) if (r.keys.some(k => text.includes(k))) return r.reply; return null; }
+
+/* ---------- 4. web lookup, health-filtered ---------- */
+const NON_MEDICAL = ['song', 'album', 'single by', 'ep by', 'band', 'musician', 'singer', 'rapper', 'soundtrack',
+  'film', 'movie', 'tv series', 'television series', 'sitcom', 'miniseries', 'actor', 'actress', 'novel', 'book by',
+  'video game', 'manga', 'anime', 'footballer', 'basketball', 'wrestler', 'painting', 'sculpture', 'municipality', 'village in', 'town in'];
+function looksNonMedical(sum) {
+  const t = ((sum.description || '') + ' ' + (sum.extract || '')).toLowerCase();
+  return NON_MEDICAL.some(w => t.includes(w));
+}
 function firstSentences(str, n) {
   const parts = str.replace(/\s+/g, ' ').split(/(?<=\.)\s/);
   return parts.slice(0, n).join(' ').trim();
 }
+async function fetchWiki(q) {
+  const sUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(q)}&format=json&origin=*&srlimit=1`;
+  const sr = await fetch(sUrl).then(r => r.json());
+  const hit = sr && sr.query && sr.query.search && sr.query.search[0];
+  if (!hit) return null;
+  const sum = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(hit.title)}`).then(r => r.json());
+  if (!sum || !sum.extract || sum.type === 'disambiguation') return null;
+  return { title: hit.title, sum };
+}
 async function wikiAnswer(q) {
   try {
-    const sUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(q)}&format=json&origin=*&srlimit=1`;
-    const sr = await fetch(sUrl).then(r => r.json());
-    const hit = sr && sr.query && sr.query.search && sr.query.search[0];
-    if (!hit) return null;
-    const title = hit.title;
-    const sum = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`).then(r => r.json());
-    if (sum.type === 'disambiguation' || !sum.extract) return null;
+    let res = await fetchWiki(q);
+    if (!res || looksNonMedical(res.sum)) res = await fetchWiki(q + ' medicine') || res;
+    if (!res || looksNonMedical(res.sum) || !res.sum.extract) return null;
     return {
-      text: firstSentences(sum.extract, 3),
-      url: (sum.content_urls && sum.content_urls.desktop && sum.content_urls.desktop.page) || `https://en.wikipedia.org/wiki/${encodeURIComponent(title)}`
+      text: firstSentences(res.sum.extract, 3),
+      url: (res.sum.content_urls && res.sum.content_urls.desktop && res.sum.content_urls.desktop.page) || `https://en.wikipedia.org/wiki/${encodeURIComponent(res.title)}`
     };
   } catch (e) { return null; }
 }
 
-async function getReply(text) {
-  const local = findLocalReply(text);
-  if (local) return { text: local };
-  const wiki = await wikiAnswer(text);
+/* ---------- reply pipeline ---------- */
+async function getReply(raw) {
+  const text = raw.toLowerCase();
+  if (CRISIS_KEYS.some(k => text.includes(k))) return { text: CRISIS_REPLY, urgent: true };
+  const urgent = scan(URGENT, text); if (urgent) return { text: urgent, urgent: true };
+  const common = scan(COMMON, text); if (common) return { text: common };
+  const wiki = await wikiAnswer(raw);
   if (wiki) return { text: wiki.text, source: wiki.url };
-  return { text: "I couldn't find a clear answer for that one. Try rephrasing it, or ask your doctor or pharmacist for anything specific to you." };
+  return { text: "I couldn't find a reliable health answer for that one. If it's about a symptom, gentle self-care helps for mild cases, and anything that worsens or worries you is worth a professional's look. You can also try rephrasing." };
 }
 
 async function handleSend(text) {
@@ -129,14 +157,12 @@ async function handleSend(text) {
   try {
     const r = await getReply(text);
     hideTyping();
-    addMsg(r.text, 'bot', { disclaimer: true, source: r.source });
+    addMsg(r.text, 'bot', { disclaimer: true, source: r.source, urgent: r.urgent });
     recordMsg('bot', r.text);
   } catch (e) {
     hideTyping();
     addMsg("Sorry, I had trouble answering that just now. Please try again.", 'bot');
-  } finally {
-    el('chat-send').disabled = false;
-  }
+  } finally { el('chat-send').disabled = false; }
 }
 
 function initChat() {
