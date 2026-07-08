@@ -1,5 +1,5 @@
 # TechMed
-<img src="TechMed_logo_circular.png" alt="TechMed" width="200" />
+<img src="banner(1).png" alt="TechMed" width="400" />
 TechMed
 
 An accessible, AI-powered symptom checker to help patients understand their health concerns.
