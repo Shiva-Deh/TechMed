@@ -24,10 +24,9 @@ TechMed is built for patients and caregivers who want:
 - **Email:** yutechmed@gmail.com
 
 [![Report an Issue](https://img.shields.io/badge/%20Report%20an%20Issue-FFD700?style=for-the-badge&logo=github&logoColor=black)](https://github.com/Shiva-Deh/TechMed/issues)
-[![Instagram](https://img.shields.io/badge/%20Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/yutechmed/)
+[![Instagram](https://img.shields.io/badge/%20Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/yu_techmed/)
 [![LinkedIn](https://img.shields.io/badge/%20LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/yu-techmed/)
 [![Email Us](https://img.shields.io/badge/%20Email%20Us-ffffff?style=for-the-badge)](mailto:yutechmed@gmail.com)
-[![Instagram](https://img.shields.io/badge/%20Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/YOUR_USERNAME)
 
 ## Contributing
 
