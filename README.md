@@ -1,46 +1,39 @@
 # TechMed
-<img src="banner(1).png" alt="TechMed" width="400" />
-TechMed
+![TechMed - AI-powered symptom checking](banner.png)
 
-An accessible, AI-powered symptom checker to help patients understand their health concerns.
+# TechMed
 
-TechMed is an accessible, AI-powered symptom-checking application that helps patients better understand their health concerns. TechMed guides users to describe, analyze, and understand their symptoms end-to-end, producing clear insights they can discuss with a healthcare provider.
+**An accessible, AI-powered symptom checker to help patients understand their health concerns.**
+
+[TechMed](https://github.com/Shiva-Deh/TechMed) is an accessible, AI-powered symptom-checking application that helps patients better understand their health concerns. TechMed guides users to **describe, analyze, and understand** their symptoms end-to-end, producing clear insights they can discuss with a healthcare provider.
 
 TechMed is built for patients and caregivers who want:
 
+- **Accessible health guidance** - check symptoms easily, anytime, anywhere
+- **Clear, understandable insights** - less confusion, more actionable next steps
+- **Better-informed conversations** - arrive at appointments already understanding your concerns
 
-Accessible health guidance - check symptoms easily, anytime, anywhere
-Clear, understandable insights - less confusion, more actionable next steps
-Better-informed conversations - arrive at appointments already understanding your concerns
+## Getting Started
 
+- **Quickstart:** https://github.com/Shiva-Deh/TechMed#getting-started
+- **Docs:** https://github.com/Shiva-Deh/TechMed/wiki
+- **Repository:** https://github.com/Shiva-Deh/TechMed
 
-Getting Started
+## Support & Community
 
+- **GitHub Issues:** https://github.com/Shiva-Deh/TechMed/issues
+- **Email:** yutechmed@gmail.com
 
-Quickstart: https://github.com/Shiva-Deh/TechMed#getting-started
-Docs: https://github.com/Shiva-Deh/TechMed/wiki
-Repository: https://github.com/Shiva-Deh/TechMed
+[![Report an Issue](https://img.shields.io/badge/🐛%20Report%20an%20Issue-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Shiva-Deh/TechMed/issues)
+[![Email Us](https://img.shields.io/badge/✉️%20Email%20Us-ffffff?style=for-the-badge)](mailto:yutechmed@gmail.com)
 
-
-Support & Community
-
-
-GitHub Issues: https://github.com/Shiva-Deh/TechMed/issues
-Email: yutechmed@gmail.com
-
-
-Show Image
-Show Image
-
-Contributing
+## Contributing
 
 We welcome contributions - bugs, features, docs, and ideas.
 
+- **Report bugs / request features:** https://github.com/Shiva-Deh/TechMed/issues
+- **Open a pull request:** https://github.com/Shiva-Deh/TechMed/pulls
 
-Report bugs / request features: https://github.com/Shiva-Deh/TechMed/issues
-Open a pull request: https://github.com/Shiva-Deh/TechMed/pulls
+## Contact
 
-
-Contact
-
-Email: yutechmed@gmail.com
+Email: [yutechmed@gmail.com](mailto:yutechmed@gmail.com)
