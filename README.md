@@ -15,7 +15,6 @@ TechMed is built for patients and caregivers who want:
 
 ## Getting Started
 
-- **Quickstart:** https://github.com/Shiva-Deh/TechMed#getting-started
 - **Docs:** https://github.com/Shiva-Deh/TechMed/wiki
 - **Repository:** https://github.com/Shiva-Deh/TechMed
 
